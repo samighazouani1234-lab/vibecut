@@ -8,7 +8,7 @@ const upload = multer({ dest: "uploads/" });
 
 app.use(cors());
 
-// 👉 servir le frontend
+// 👉 IMPORTANT
 app.use(express.static("frontend"));
 
 // 👉 route principale
@@ -16,8 +16,12 @@ app.get("/", (req, res) => {
   res.sendFile(path.resolve("frontend/index.html"));
 });
 
-// 👉 API
-app.post("/generate", upload.single("audio"), async (req, res) => {
+// 👉 test API
+app.get("/test", (req, res) => {
+  res.send("API OK");
+});
+
+app.post("/generate", upload.single("audio"), (req, res) => {
   res.json({
     videoUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4"
   });
