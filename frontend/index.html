@@ -7,6 +7,7 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+
 body{
   font-family:Arial, sans-serif;
   min-height:100vh;
@@ -16,6 +17,7 @@ body{
     radial-gradient(circle at bottom right, rgba(139,30,63,.25), transparent 35%),
     #070707;
 }
+
 body::before{
   content:"";
   position:fixed;
@@ -25,10 +27,13 @@ body::before{
   opacity:.25;
   pointer-events:none;
 }
+
 .container{width:min(1150px,92%);margin:auto;position:relative;z-index:2}
 header{display:flex;justify-content:space-between;align-items:center;padding:28px 0}
 .logo{font-size:28px;font-weight:900;color:#f5d06a}
 nav a{color:#ddd;text-decoration:none;margin-left:26px}
+nav a:hover{color:#f5d06a}
+
 .hero{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;padding:80px 0}
 .badge{
   display:inline-block;
@@ -38,9 +43,11 @@ nav a{color:#ddd;text-decoration:none;margin-left:26px}
   color:#f5d06a;
   margin-bottom:25px;
 }
+
 h1{font-size:64px;line-height:1;margin-bottom:25px}
 h1 span{color:#f5d06a}
 p{color:#ccc;line-height:1.7;font-size:18px}
+
 button,.btn{
   background:linear-gradient(135deg,#d4af37,#ff8c42);
   color:#080808;
@@ -52,6 +59,9 @@ button,.btn{
   margin-top:25px;
   box-shadow:0 0 35px rgba(212,175,55,.3);
 }
+
+button:hover,.btn:hover{transform:translateY(-2px)}
+
 .card{
   background:rgba(255,255,255,.06);
   border:1px solid rgba(212,175,55,.3);
@@ -59,6 +69,7 @@ button,.btn{
   padding:18px;
   box-shadow:0 30px 80px rgba(0,0,0,.55);
 }
+
 .preview{
   height:390px;
   border-radius:24px;
@@ -72,18 +83,24 @@ button,.btn{
   justify-content:center;
   font-size:64px;
 }
+
 .section{padding:60px 0;text-align:center}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:35px}
+
 .style{
   background:rgba(255,255,255,.05);
   border:1px solid rgba(212,175,55,.25);
   border-radius:25px;
   padding:28px;
   cursor:pointer;
+  transition:.25s;
 }
+
 .style:hover{border-color:#f5d06a;transform:translateY(-5px)}
 .style h3{color:#f5d06a;margin:15px 0}
+
 .hidden{display:none}
+
 .upload-box{
   margin:35px auto;
   max-width:520px;
@@ -92,6 +109,7 @@ button,.btn{
   border-radius:30px;
   background:rgba(255,255,255,.05);
 }
+
 .progress{
   height:14px;
   background:#222;
@@ -100,13 +118,22 @@ button,.btn{
   margin:30px auto;
   max-width:500px;
 }
+
 .bar{
   height:100%;
   width:0%;
   background:linear-gradient(90deg,#d4af37,#ff8c42);
 }
-video{max-width:700px;width:100%;border-radius:25px;border:1px solid rgba(212,175,55,.4)}
+
+video{
+  max-width:700px;
+  width:100%;
+  border-radius:25px;
+  border:1px solid rgba(212,175,55,.4);
+}
+
 footer{text-align:center;padding:35px;color:#777}
+
 @media(max-width:850px){
   .hero{grid-template-columns:1fr;text-align:center}
   h1{font-size:44px}
@@ -185,7 +212,7 @@ footer{text-align:center;padding:35px;color:#777}
 <section class="section hidden" id="loading">
   <div class="container">
     <h2>Génération du clip...</h2>
-    <p id="loadingText">Analyse du son...</p>
+    <p id="loadingText">Envoi du son au serveur...</p>
     <div class="progress"><div class="bar" id="bar"></div></div>
     <p id="percent">0%</p>
   </div>
@@ -194,7 +221,7 @@ footer{text-align:center;padding:35px;color:#777}
 <section class="section hidden" id="result">
   <div class="container">
     <h2>Ton clip est prêt 🔥</h2>
-    <video controls src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"></video>
+    <video controls id="resultVideo"></video>
     <br>
     <button onclick="location.reload()">Créer un autre clip</button>
   </div>
@@ -205,6 +232,8 @@ footer{text-align:center;padding:35px;color:#777}
 </footer>
 
 <script>
+const BACKEND_URL = "https://vibecut.onrender.com";
+
 function hideAll(){
   document.getElementById("create").classList.add("hidden");
   document.getElementById("selectStyle").classList.add("hidden");
@@ -220,41 +249,78 @@ function start(){
 
 function showStyles(){
   const file = document.getElementById("file").files[0];
+
   if(!file){
     alert("Ajoute d’abord un fichier audio.");
     return;
   }
+
   hideAll();
   document.getElementById("selectStyle").classList.remove("hidden");
   document.getElementById("selectStyle").scrollIntoView({behavior:"smooth"});
 }
 
-function generate(){
-  hideAll();
-  document.getElementById("loading").classList.remove("hidden");
-  document.getElementById("loading").scrollIntoView({behavior:"smooth"});
-
+function animateProgress(){
   let progress = 0;
   const bar = document.getElementById("bar");
   const percent = document.getElementById("percent");
   const text = document.getElementById("loadingText");
 
-  const interval = setInterval(() => {
-    progress += 10;
-    bar.style.width = progress + "%";
-    percent.innerText = progress + "%";
+  return setInterval(() => {
+    if(progress < 90){
+      progress += 10;
+      bar.style.width = progress + "%";
+      percent.innerText = progress + "%";
+    }
 
-    if(progress === 30) text.innerText = "Création des scènes orientales...";
-    if(progress === 60) text.innerText = "Montage du clip...";
+    if(progress === 30) text.innerText = "Analyse du son...";
+    if(progress === 60) text.innerText = "Création du clip...";
     if(progress === 90) text.innerText = "Finalisation...";
+  }, 400);
+}
 
-    if(progress >= 100){
-      clearInterval(interval);
+async function generate(){
+  hideAll();
+  document.getElementById("loading").classList.remove("hidden");
+  document.getElementById("loading").scrollIntoView({behavior:"smooth"});
+
+  const file = document.getElementById("file").files[0];
+
+  if(!file){
+    alert("Ajoute un son !");
+    return;
+  }
+
+  const interval = animateProgress();
+
+  const formData = new FormData();
+  formData.append("audio", file);
+
+  try{
+    const res = await fetch(`${BACKEND_URL}/generate`, {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    clearInterval(interval);
+
+    document.getElementById("bar").style.width = "100%";
+    document.getElementById("percent").innerText = "100%";
+
+    setTimeout(() => {
       hideAll();
       document.getElementById("result").classList.remove("hidden");
       document.getElementById("result").scrollIntoView({behavior:"smooth"});
-    }
-  }, 350);
+      document.getElementById("resultVideo").src = data.videoUrl;
+    }, 500);
+
+  } catch(error){
+    clearInterval(interval);
+    alert("Erreur serveur. Réessaie dans quelques secondes.");
+    console.error(error);
+  }
 }
 </script>
 
