@@ -1,0 +1,17 @@
+{
+  "name": "vibecut-backend",
+  "version": "1.0.0",
+  "description": "Backend for VibeCut AI video generator",
+  "main": "server.js",
+  "type": "module",
+
+  "scripts": {
+    "start": "node server.js"
+  },
+
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5"
+  }
+}
