@@ -1,17 +1,26 @@
-{
-  "name": "vibecut-backend",
-  "version": "1.0.0",
-  "description": "Backend for VibeCut AI video generator",
-  "main": "server.js",
-  "type": "module",
+import express from "express";
+import cors from "cors";
+import multer from "multer";
 
-  "scripts": {
-    "start": "node server.js"
-  },
+const app = express();
+const upload = multer({ dest: "uploads/" });
 
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "multer": "^1.4.5"
-  }
-}
+app.use(cors());
+
+app.get("/", (req, res) => {
+  res.send("VibeCut backend OK");
+});
+
+app.post("/generate", upload.single("audio"), (req, res) => {
+  setTimeout(() => {
+    res.json({
+      videoUrl: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+    });
+  }, 2000);
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`VibeCut backend running on port ${PORT}`);
+});
