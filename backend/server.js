@@ -1,26 +1,26 @@
 import express from "express";
 import cors from "cors";
 import multer from "multer";
+import path from "path";
 
 const app = express();
 const upload = multer({ dest: "uploads/" });
 
 app.use(cors());
 
+// 👉 servir le frontend
+app.use(express.static("frontend"));
+
+// 👉 route principale
 app.get("/", (req, res) => {
-  res.send("VibeCut backend OK");
+  res.sendFile(path.resolve("frontend/index.html"));
 });
 
-app.post("/generate", upload.single("audio"), (req, res) => {
-  setTimeout(() => {
-    res.json({
-      videoUrl: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-    });
-  }, 2000);
+// 👉 API
+app.post("/generate", upload.single("audio"), async (req, res) => {
+  res.json({
+    videoUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4"
+  });
 });
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`VibeCut backend running on port ${PORT}`);
-});
+app.listen(3000, () => console.log("Server running"));
