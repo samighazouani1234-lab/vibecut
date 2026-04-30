@@ -1,10 +1,496 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>VibeCut</title>
-  </head>
-  <body style="background:#0B0B0F;color:white;text-align:center;padding:50px;">
-    <h1>VibeCut 🎬</h1>
-    <p>Ton site est en ligne 🔥</p>
-  </body>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>VibeCut | Crée ton clip musical avec l'IA</title>
+  <meta name="description" content="VibeCut permet aux artistes de créer des clips musicaux IA avec un style oriental, maghrébin et cinématique." />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(212, 175, 55, 0.18), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(139, 30, 63, 0.25), transparent 35%),
+        #070707;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(30deg, rgba(212,175,55,0.05) 12%, transparent 12.5%, transparent 87%, rgba(212,175,55,0.05) 87.5%, rgba(212,175,55,0.05)),
+        linear-gradient(150deg, rgba(212,175,55,0.05) 12%, transparent 12.5%, transparent 87%, rgba(212,175,55,0.05) 87.5%, rgba(212,175,55,0.05));
+      background-size: 80px 140px;
+      opacity: 0.22;
+      pointer-events: none;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 26px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      font-size: 22px;
+      color: #f5d06a;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d4af37, #8b1e3f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 28px rgba(212,175,55,0.4);
+      color: #0a0a0a;
+      font-size: 18px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    nav a {
+      color: rgba(255,255,255,0.72);
+      text-decoration: none;
+      font-size: 15px;
+      transition: 0.25s;
+    }
+
+    nav a:hover {
+      color: #f5d06a;
+    }
+
+    .lang-btn {
+      border: 1px solid rgba(212,175,55,0.45);
+      background: rgba(255,255,255,0.04);
+      color: #f5d06a;
+      padding: 10px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 52px;
+      padding: 80px 0 90px;
+    }
+
+    .badge {
+      display: inline-block;
+      border: 1px solid rgba(212,175,55,0.35);
+      background: rgba(212,175,55,0.08);
+      color: #f5d06a;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: clamp(44px, 6vw, 76px);
+      line-height: 0.98;
+      letter-spacing: -2px;
+      margin-bottom: 26px;
+    }
+
+    h1 span {
+      color: #f5d06a;
+      text-shadow: 0 0 28px rgba(212,175,55,0.35);
+    }
+
+    .hero p {
+      color: rgba(255,255,255,0.68);
+      font-size: 18px;
+      line-height: 1.7;
+      max-width: 560px;
+      margin-bottom: 34px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 0 26px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.25s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #d4af37, #ff8c42);
+      color: #090909;
+      box-shadow: 0 0 36px rgba(212,175,55,0.26);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 48px rgba(212,175,55,0.4);
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .preview-card {
+      position: relative;
+      border: 1px solid rgba(212,175,55,0.28);
+      border-radius: 34px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+      backdrop-filter: blur(10px);
+    }
+
+    .video-preview {
+      height: 420px;
+      border-radius: 26px;
+      background:
+        linear-gradient(rgba(0,0,0,0.16), rgba(0,0,0,0.72)),
+        url("https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1200&q=80");
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .play {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: rgba(212,175,55,0.92);
+      color: #070707;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      box-shadow: 0 0 42px rgba(212,175,55,0.45);
+    }
+
+    .video-label {
+      position: absolute;
+      left: 22px;
+      bottom: 22px;
+      right: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .video-label strong {
+      color: #f5d06a;
+      font-size: 20px;
+    }
+
+    .video-label span {
+      color: rgba(255,255,255,0.72);
+      font-size: 14px;
+    }
+
+    .styles {
+      padding: 40px 0 90px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(32px, 4vw, 48px);
+      margin-bottom: 12px;
+    }
+
+    .section-title p {
+      color: rgba(255,255,255,0.58);
+    }
+
+    .style-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .style-card {
+      min-height: 230px;
+      border-radius: 28px;
+      border: 1px solid rgba(212,175,55,0.24);
+      padding: 24px;
+      background: rgba(255,255,255,0.045);
+      position: relative;
+      overflow: hidden;
+      transition: 0.25s;
+    }
+
+    .style-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(212,175,55,0.65);
+      box-shadow: 0 20px 60px rgba(212,175,55,0.13);
+    }
+
+    .style-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -60px auto;
+      width: 160px;
+      height: 160px;
+      background: rgba(212,175,55,0.18);
+      filter: blur(40px);
+    }
+
+    .style-card .emoji {
+      font-size: 36px;
+      margin-bottom: 18px;
+    }
+
+    .style-card h3 {
+      color: #f5d06a;
+      margin-bottom: 10px;
+      font-size: 21px;
+    }
+
+    .style-card p {
+      color: rgba(255,255,255,0.62);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .steps {
+      padding: 70px 0;
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(212,175,55,0.14);
+      border-bottom: 1px solid rgba(212,175,55,0.14);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .step {
+      padding: 26px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.26);
+    }
+
+    .step-number {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #d4af37;
+      color: #080808;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      margin-bottom: 18px;
+    }
+
+    .step h3 {
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .step p {
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+
+    footer {
+      padding: 34px 0;
+      text-align: center;
+      color: rgba(255,255,255,0.45);
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 50px;
+      }
+
+      .video-preview {
+        height: 320px;
+      }
+
+      .style-grid,
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon">▶</div>
+        VIBECUT
+      </div>
+
+      <nav>
+        <a href="#styles">Styles</a>
+        <a href="#steps">Comment ça marche</a>
+        <a href="#start">Créer un clip</a>
+      </nav>
+
+      <button class="lang-btn">FR / العربية / EN</button>
+    </header>
+
+    <main class="hero" id="start">
+      <section>
+        <div class="badge">🕌 Style oriental traditionnel pour artistes</div>
+
+        <h1>
+          Crée ton clip musical avec une <span>âme orientale</span>
+        </h1>
+
+        <p>
+          VibeCut transforme ton son en clip vidéo IA inspiré du Maghreb, des médinas,
+          des lanternes, du désert et de l’architecture orientale traditionnelle.
+        </p>
+
+        <div class="actions">
+          <a href="#" class="btn-primary">Créer mon clip</a>
+          <a href="#styles" class="btn-secondary">Voir les styles</a>
+        </div>
+      </section>
+
+      <section class="preview-card">
+        <div class="video-preview">
+          <div class="play">▶</div>
+
+          <div class="video-label">
+            <div>
+              <strong>Oriental Night</strong><br />
+              <span>Médina, lanternes, nuit cinématique</span>
+            </div>
+            <span>00:30</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <section class="styles" id="styles">
+    <div class="container">
+      <div class="section-title">
+        <h2>Styles de clips</h2>
+        <p>Choisis une ambiance. L’IA génère le visuel adapté à ton son.</p>
+      </div>
+
+      <div class="style-grid">
+        <div class="style-card">
+          <div class="emoji">🌙</div>
+          <h3>Oriental Night</h3>
+          <p>Médina de nuit, lanternes chaudes, ombres douces et ambiance mystique.</p>
+        </div>
+
+        <div class="style-card">
+          <div class="emoji">🏜️</div>
+          <h3>Desert Vibe</h3>
+          <p>Désert doré, vent dans le sable, coucher de soleil et émotion.</p>
+        </div>
+
+        <div class="style-card">
+          <div class="emoji">🕌</div>
+          <h3>Royal Arabic</h3>
+          <p>Palais, dorures, motifs traditionnels et rendu luxueux cinématique.</p>
+        </div>
+
+        <div class="style-card">
+          <div class="emoji">💃</div>
+          <h3>Maghreb Classic</h3>
+          <p>Couleurs chaudes, énergie populaire, inspiration raï, chaâbi et clip urbain.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps" id="steps">
+    <div class="container">
+      <div class="section-title">
+        <h2>Comment ça marche ?</h2>
+        <p>Simple, rapide, pensé pour les artistes indépendants.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Upload ton son</h3>
+          <p>Ajoute ton fichier audio MP3 ou WAV directement sur la plateforme.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Choisis un style</h3>
+          <p>Sélectionne Oriental Night, Desert Vibe, Royal Arabic ou Maghreb Classic.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Génère ton clip</h3>
+          <p>L’IA crée une vidéo inspirée de ton univers musical.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 VibeCut — AI music videos for artists
+  </footer>
+</body>
 </html>
