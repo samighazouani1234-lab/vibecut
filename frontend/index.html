@@ -1,113 +1,230 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VibeCut | Clip IA Oriental</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
-  font-family:Arial,sans-serif;
-  min-height:100vh;
+  font-family:Arial, sans-serif;
   color:white;
-  background:linear-gradient(135deg,#080808,#250000);
-  text-align:center;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top left,rgba(212,175,55,.18),transparent 30%),
+    radial-gradient(circle at bottom right,rgba(120,30,20,.35),transparent 35%),
+    #050505;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(30deg,rgba(212,175,55,.05) 12%,transparent 12.5%),
+    linear-gradient(150deg,rgba(212,175,55,.05) 12%,transparent 12.5%);
+  background-size:90px 90px;
+  opacity:.35;
+  pointer-events:none;
 }
 
 .container{
-  max-width:900px;
+  width:min(1150px,92%);
   margin:auto;
-  padding:50px 20px;
+  position:relative;
+  z-index:2;
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:28px 0;
+}
+
+.logo{
+  font-size:30px;
+  font-weight:900;
+  color:#f5d06a;
+}
+
+nav a{
+  color:#ddd;
+  text-decoration:none;
+  margin-left:28px;
+  font-weight:bold;
+}
+
+nav a:hover{color:#f5d06a}
+
+.hero{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:50px;
+  align-items:center;
+  padding:70px 0;
+}
+
+.badge{
+  display:inline-block;
+  padding:10px 18px;
+  border:1px solid rgba(212,175,55,.45);
+  border-radius:30px;
+  color:#f5d06a;
+  background:rgba(212,175,55,.08);
+  margin-bottom:25px;
 }
 
 h1{
-  color:#f5c542;
-  font-size:48px;
-  margin-bottom:15px;
+  font-size:64px;
+  line-height:1;
+  margin-bottom:25px;
+}
+
+h1 span{
+  color:#f5d06a;
+  text-shadow:0 0 25px rgba(212,175,55,.35);
 }
 
 p{
-  color:#ddd;
+  color:#ccc;
   font-size:18px;
-}
-
-.card{
-  margin:45px auto;
-  padding:35px;
-  max-width:520px;
-  border-radius:26px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(245,197,66,0.25);
-  box-shadow:0 0 50px rgba(245,197,66,0.12);
-}
-
-input,select{
-  margin:15px 0;
-  padding:13px;
-  border-radius:12px;
-  border:none;
-  width:85%;
-  max-width:320px;
-  font-size:16px;
+  line-height:1.7;
 }
 
 button{
-  margin-top:20px;
-  padding:16px 35px;
+  margin-top:25px;
+  padding:16px 34px;
   border:none;
   border-radius:40px;
   background:linear-gradient(135deg,#d4af37,#ff8c42);
-  color:#111;
+  color:#080808;
   font-weight:900;
   cursor:pointer;
-  box-shadow:0 0 30px rgba(212,175,55,.35);
+  box-shadow:0 0 35px rgba(212,175,55,.3);
 }
 
-button:hover{
-  transform:translateY(-2px);
+button:hover{transform:translateY(-2px)}
+
+.preview-card{
+  padding:18px;
+  border-radius:32px;
+  border:1px solid rgba(212,175,55,.35);
+  background:rgba(255,255,255,.06);
+  box-shadow:0 35px 90px rgba(0,0,0,.6);
 }
 
-#progress{
-  margin-top:25px;
-  font-size:18px;
-  color:#f5c542;
+.preview{
+  height:390px;
+  border-radius:25px;
+  background:
+    linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.75)),
+    url("https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1200&q=80");
+  background-size:cover;
+  background-position:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:70px;
+}
+
+.section{
+  padding:65px 0;
+  text-align:center;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+  margin-top:35px;
+}
+
+.style-card{
+  padding:28px;
+  border-radius:26px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(212,175,55,.25);
+  cursor:pointer;
+  transition:.25s;
+}
+
+.style-card:hover{
+  transform:translateY(-6px);
+  border-color:#f5d06a;
+  box-shadow:0 20px 55px rgba(212,175,55,.15);
+}
+
+.style-card h3{
+  color:#f5d06a;
+  margin:14px 0;
+}
+
+.app-card{
+  max-width:620px;
+  margin:35px auto;
+  padding:38px;
+  border-radius:30px;
+  border:1px solid rgba(212,175,55,.35);
+  background:rgba(255,255,255,.06);
+  box-shadow:0 25px 70px rgba(0,0,0,.45);
+}
+
+input,select{
+  width:90%;
+  max-width:360px;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  margin:15px 0;
+  font-size:16px;
 }
 
 .loaderbar{
-  width:80%;
-  max-width:420px;
-  height:12px;
-  background:#222;
-  border-radius:20px;
-  overflow:hidden;
-  margin:20px auto;
   display:none;
+  width:85%;
+  max-width:450px;
+  height:13px;
+  background:#222;
+  border-radius:30px;
+  overflow:hidden;
+  margin:25px auto;
 }
 
 .loaderfill{
-  height:100%;
   width:0%;
+  height:100%;
   background:linear-gradient(90deg,#d4af37,#ff8c42);
   transition:.3s;
 }
 
-video{
-  margin-top:30px;
-  width:90%;
-  max-width:700px;
-  border-radius:22px;
-  border:1px solid rgba(245,197,66,.35);
+#progress{
+  margin-top:20px;
+  color:#f5d06a;
+  font-weight:bold;
 }
 
-.result-box{
-  margin-top:35px;
+video{
+  width:90%;
+  max-width:720px;
+  border-radius:25px;
+  margin-top:25px;
+  border:1px solid rgba(212,175,55,.45);
 }
 
 footer{
-  margin-top:80px;
+  text-align:center;
+  padding:40px 0;
   color:#777;
+}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;text-align:center}
+  h1{font-size:44px}
+  .grid{grid-template-columns:1fr}
+  nav{display:none}
 }
 </style>
 </head>
@@ -115,19 +232,63 @@ footer{
 <body>
 
 <div class="container">
-  <h1>VibeCut 🎬</h1>
-  <p>Crée ton clip IA style oriental</p>
+<header>
+  <div class="logo">🕌 VibeCut</div>
+  <nav>
+    <a href="#styles">Styles</a>
+    <a href="#create">Créer</a>
+    <a href="#result">Résultat</a>
+  </nav>
+</header>
 
-  <div class="card">
+<section class="hero">
+  <div>
+    <div class="badge">Générateur de clips IA oriental</div>
+    <h1>Crée ton clip musical avec une <span>âme orientale</span></h1>
+    <p>
+      Transforme ton son en clip vidéo inspiré du Maghreb, des médinas,
+      des lanternes, du désert et de l’architecture traditionnelle.
+    </p>
+    <button onclick="document.getElementById('create').scrollIntoView({behavior:'smooth'})">
+      Créer mon clip
+    </button>
+  </div>
+
+  <div class="preview-card">
+    <div class="preview">▶</div>
+  </div>
+</section>
+</div>
+
+<section class="section" id="styles">
+<div class="container">
+  <h2>Choisis ton univers</h2>
+  <p>Des styles visuels pensés pour artistes orientaux et maghrébins.</p>
+
+  <div class="grid">
+    <div class="style-card">🌙<h3>Oriental Night</h3><p>Médina, lanternes, ambiance mystique.</p></div>
+    <div class="style-card">🏜️<h3>Desert Vibe</h3><p>Désert doré, coucher de soleil, émotion.</p></div>
+    <div class="style-card">🕌<h3>Royal Arabic</h3><p>Palais, dorures, architecture traditionnelle.</p></div>
+    <div class="style-card">💃<h3>Maghreb Classic</h3><p>Raï, chaâbi, énergie populaire.</p></div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="create">
+<div class="container">
+  <h2>Créer ton clip</h2>
+  <p>Upload ton son, choisis un style, puis génère ton clip.</p>
+
+  <div class="app-card">
     <input type="file" id="audioInput" accept="audio/*">
 
     <br>
 
     <select id="style">
-      <option value="oriental">Oriental</option>
-      <option value="maghrebin">Maghrébin</option>
-      <option value="desert">Désert</option>
+      <option value="oriental">Oriental Night</option>
+      <option value="desert">Desert Vibe</option>
       <option value="royal">Royal Arabic</option>
+      <option value="maghrebin">Maghreb Classic</option>
       <option value="cinematic">Cinématique</option>
     </select>
 
@@ -141,13 +302,18 @@ footer{
       <div class="loaderfill" id="loaderfill"></div>
     </div>
   </div>
-
-  <div id="result" class="result-box"></div>
-
-  <footer>
-    © 2026 VibeCut — Clips IA pour artistes
-  </footer>
 </div>
+</section>
+
+<section class="section" id="result">
+<div class="container">
+  <div id="resultBox"></div>
+</div>
+</section>
+
+<footer>
+  © 2026 VibeCut — Clips IA pour artistes
+</footer>
 
 <script>
 const BACKEND_URL = "https://vibecut.onrender.com";
@@ -155,17 +321,17 @@ const BACKEND_URL = "https://vibecut.onrender.com";
 async function generateVideo(){
   const fileInput = document.getElementById("audioInput");
   const style = document.getElementById("style").value;
-  const result = document.getElementById("result");
   const progress = document.getElementById("progress");
   const loaderbar = document.getElementById("loaderbar");
   const loaderfill = document.getElementById("loaderfill");
+  const resultBox = document.getElementById("resultBox");
 
   if(!fileInput.files[0]){
     alert("Choisis un fichier audio !");
     return;
   }
 
-  result.innerHTML = "";
+  resultBox.innerHTML = "";
   progress.innerHTML = "⏳ Envoi du son au serveur...";
   loaderbar.style.display = "block";
   loaderfill.style.width = "10%";
@@ -179,17 +345,9 @@ async function generateVideo(){
       loaderfill.style.width = fakeProgress + "%";
     }
 
-    if(fakeProgress === 30){
-      progress.innerHTML = "🎵 Analyse du son...";
-    }
-
-    if(fakeProgress === 60){
-      progress.innerHTML = "🎬 Création du clip...";
-    }
-
-    if(fakeProgress === 90){
-      progress.innerHTML = "✨ Finalisation...";
-    }
+    if(fakeProgress === 30) progress.innerHTML = "🎵 Analyse du son...";
+    if(fakeProgress === 60) progress.innerHTML = "🎬 Création du clip...";
+    if(fakeProgress === 90) progress.innerHTML = "✨ Finalisation...";
   }, 500);
 
   const formData = new FormData();
@@ -198,8 +356,8 @@ async function generateVideo(){
 
   try{
     const res = await fetch(`${BACKEND_URL}/generate`, {
-      method: "POST",
-      body: formData
+      method:"POST",
+      body:formData
     });
 
     const data = await res.json();
@@ -209,20 +367,20 @@ async function generateVideo(){
     progress.innerHTML = "✅ Génération terminée";
 
     if(data.videoUrl){
-      result.innerHTML = `
+      resultBox.innerHTML = `
         <h2>Ton clip est prêt 🔥</h2>
         <video controls src="${data.videoUrl}"></video>
         <br>
         <button onclick="location.reload()">Créer un autre clip</button>
       `;
+      document.getElementById("result").scrollIntoView({behavior:"smooth"});
     } else {
-      result.innerHTML = "<p>Erreur : aucune vidéo reçue.</p>";
+      resultBox.innerHTML = "<p>Erreur : aucune vidéo reçue.</p>";
     }
 
-  } catch(error){
+  }catch(error){
     clearInterval(interval);
-    loaderbar.style.display = "none";
-    progress.innerHTML = "❌ Erreur serveur. Réessaie.";
+    progress.innerHTML = "❌ Erreur serveur";
     console.error(error);
   }
 }
