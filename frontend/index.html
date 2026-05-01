@@ -1,37 +1,145 @@
-import express from "express";
-import cors from "cors";
-import multer from "multer";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>VibeCut</title>
 
-const app = express();
-const upload = multer({ dest: "uploads/" });
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #0a0a0a, #1a0000);
+  color: white;
+  text-align: center;
+}
 
-app.use(cors());
-app.use(express.json());
+.container {
+  margin-top: 80px;
+}
 
-app.get("/", (req, res) => {
-  res.send("VibeCut backend OK");
-});
+h1 {
+  font-size: 48px;
+  color: #f5c542;
+}
 
-app.get("/test", (req, res) => {
-  res.send("API OK");
-});
+.subtitle {
+  margin-bottom: 30px;
+  color: #ccc;
+}
 
-app.post("/generate", upload.single("audio"), async (req, res) => {
-  try {
-    console.log("Audio reçu:", req.file?.originalname);
-    console.log("Style:", req.body.style);
+input, select {
+  padding: 10px;
+  margin: 10px;
+  border-radius: 8px;
+  border: none;
+}
 
-    res.json({
-      videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4"
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Erreur serveur" });
+button {
+  padding: 12px 25px;
+  background: linear-gradient(45deg, #f5c542, #ff8c00);
+  border: none;
+  border-radius: 10px;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+#progress {
+  margin-top: 20px;
+  color: #f5c542;
+}
+
+video {
+  margin-top: 30px;
+  width: 80%;
+  border-radius: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>VibeCut 🎬</h1>
+<p class="subtitle">Crée ton clip IA style oriental</p>
+
+<input type="file" id="audioInput">
+
+<br>
+
+<select id="style">
+  <option value="oriental">Oriental</option>
+  <option value="maghrebin">Maghrebin</option>
+  <option value="desert">Désert</option>
+  <option value="royal">Royal</option>
+  <option value="cinematic">Cinématique</option>
+</select>
+
+<br>
+
+<button onclick="generateVideo()">Générer</button>
+
+<div id="progress"></div>
+<div id="result"></div>
+
+</div>
+
+<script>
+const BACKEND_URL = "https://vibecut.onrender.com";
+
+async function generateVideo() {
+  const fileInput = document.getElementById("audioInput");
+  const style = document.getElementById("style").value;
+  const progress = document.getElementById("progress");
+  const result = document.getElementById("result");
+
+  if (!fileInput.files[0]) {
+    alert("Choisis un fichier audio");
+    return;
   }
-});
 
-const PORT = process.env.PORT || 3000;
+  progress.innerText = "⏳ Génération en cours...";
+  result.innerHTML = "";
 
-app.listen(PORT, () => {
-  console.log("Server running");
-});
+  const formData = new FormData();
+  formData.append("audio", fileInput.files[0]);
+  formData.append("style", style);
+
+  try {
+    const response = await fetch(`${BACKEND_URL}/generate`, {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.videoUrl) {
+      progress.innerText = "🔥 Vidéo prête !";
+
+      result.innerHTML = `
+        <video controls autoplay>
+          <source src="${data.videoUrl}" type="video/mp4">
+        </video>
+        <br><br>
+        <a href="${data.videoUrl}" download>
+          <button>Télécharger</button>
+        </a>
+      `;
+    } else {
+      progress.innerText = "❌ Erreur génération";
+    }
+
+  } catch (err) {
+    console.error(err);
+    progress.innerText = "❌ Erreur serveur";
+  }
+}
+</script>
+
+</body>
+</html>
