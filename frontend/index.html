@@ -1,77 +1,58 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>VibeCut | Clip IA Oriental</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeCut | Clips IA Oriental</title>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
-  font-family: Arial, sans-serif;
-  min-height:100vh;
+  font-family:Arial,sans-serif;
   color:white;
   background:
-    radial-gradient(circle at top left, rgba(212,175,55,.18), transparent 32%),
-    radial-gradient(circle at bottom right, rgba(120,25,20,.35), transparent 38%),
+    radial-gradient(circle at top left,rgba(212,175,55,.20),transparent 30%),
+    radial-gradient(circle at bottom right,rgba(130,30,20,.35),transparent 35%),
     #050505;
+  min-height:100vh;
 }
 
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background-image:
-    linear-gradient(30deg,rgba(212,175,55,.05) 12%,transparent 12.5%),
-    linear-gradient(150deg,rgba(212,175,55,.05) 12%,transparent 12.5%);
-  background-size:90px 90px;
-  opacity:.35;
-  pointer-events:none;
-}
-
-.container{
-  width:min(1150px,92%);
-  margin:auto;
-  position:relative;
-  z-index:2;
-}
+.container{width:min(1150px,92%);margin:auto}
 
 header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:30px 0;
+  padding:28px 0;
 }
 
 .logo{
+  color:#f5d06a;
   font-size:30px;
   font-weight:900;
-  color:#f5d06a;
 }
 
 nav a{
   color:#ddd;
+  margin-left:25px;
   text-decoration:none;
-  margin-left:28px;
-  font-weight:bold;
 }
 
 .hero{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:55px;
+  gap:50px;
   align-items:center;
   padding:70px 0;
 }
 
 .badge{
   display:inline-block;
-  padding:10px 18px;
   border:1px solid rgba(212,175,55,.45);
-  border-radius:30px;
   color:#f5d06a;
-  background:rgba(212,175,55,.08);
+  padding:10px 18px;
+  border-radius:30px;
   margin-bottom:25px;
 }
 
@@ -81,10 +62,7 @@ h1{
   margin-bottom:25px;
 }
 
-h1 span{
-  color:#f5d06a;
-  text-shadow:0 0 25px rgba(212,175,55,.35);
-}
+h1 span{color:#f5d06a}
 
 p{
   color:#ccc;
@@ -92,41 +70,38 @@ p{
   line-height:1.7;
 }
 
-.hero button{
-  margin-top:30px;
-}
-
 button{
+  margin-top:25px;
   padding:16px 34px;
   border:none;
   border-radius:40px;
   background:linear-gradient(135deg,#d4af37,#ff8c42);
-  color:#080808;
+  color:#111;
   font-weight:900;
   cursor:pointer;
-  box-shadow:0 0 35px rgba(212,175,55,.3);
 }
 
-.preview-card{
-  padding:18px;
-  border-radius:32px;
-  border:1px solid rgba(212,175,55,.35);
+.preview-card,.app-card,.style-card{
   background:rgba(255,255,255,.06);
-  box-shadow:0 35px 90px rgba(0,0,0,.6);
+  border:1px solid rgba(212,175,55,.30);
+  border-radius:30px;
+  box-shadow:0 30px 80px rgba(0,0,0,.45);
 }
+
+.preview-card{padding:18px}
 
 .preview{
   height:390px;
-  border-radius:25px;
+  border-radius:24px;
   background:
-    linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.75)),
+    linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.75)),
     url("https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1200&q=80");
   background-size:cover;
   background-position:center;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:70px;
+  font-size:72px;
 }
 
 .section{
@@ -143,48 +118,40 @@ button{
 
 .style-card{
   padding:28px;
-  border-radius:26px;
-  background:rgba(255,255,255,.055);
-  border:1px solid rgba(212,175,55,.25);
   transition:.25s;
 }
 
 .style-card:hover{
   transform:translateY(-6px);
   border-color:#f5d06a;
-  box-shadow:0 20px 55px rgba(212,175,55,.15);
 }
 
 .style-card h3{
   color:#f5d06a;
-  margin:14px 0;
+  margin:15px 0;
 }
 
 .app-card{
-  max-width:640px;
+  max-width:650px;
   margin:35px auto;
   padding:42px;
-  border-radius:32px;
-  border:1px solid rgba(212,175,55,.35);
-  background:rgba(255,255,255,.06);
-  box-shadow:0 25px 70px rgba(0,0,0,.45);
 }
 
 input,select{
   width:90%;
-  max-width:370px;
+  max-width:380px;
   padding:15px;
-  border-radius:15px;
+  margin:14px;
   border:none;
-  margin:15px 0;
+  border-radius:14px;
   font-size:16px;
 }
 
 .loaderbar{
   display:none;
+  height:14px;
   width:85%;
-  max-width:450px;
-  height:13px;
+  max-width:460px;
   background:#222;
   border-radius:30px;
   overflow:hidden;
@@ -206,21 +173,21 @@ input,select{
 
 video{
   width:90%;
-  max-width:720px;
-  border-radius:25px;
+  max-width:760px;
   margin-top:25px;
+  border-radius:25px;
   border:1px solid rgba(212,175,55,.45);
 }
 
 footer{
+  padding:40px;
   text-align:center;
-  padding:40px 0;
   color:#777;
 }
 
 @media(max-width:900px){
   .hero{grid-template-columns:1fr;text-align:center}
-  h1{font-size:44px}
+  h1{font-size:42px}
   .grid{grid-template-columns:1fr}
   nav{display:none}
 }
@@ -275,7 +242,7 @@ footer{
 <section class="section" id="create">
 <div class="container">
   <h2>Créer ton clip</h2>
-  <p>Upload ton son, choisis un style, puis génère ton clip.</p>
+  <p>Upload ton son, choisis ton style, puis génère ton clip.</p>
 
   <div class="app-card">
     <input type="file" id="audioInput" accept="audio/*">
@@ -346,7 +313,7 @@ async function generateVideo(){
     if(fakeProgress === 30) progress.innerHTML = "🎵 Analyse du son...";
     if(fakeProgress === 60) progress.innerHTML = "🎬 Création du clip...";
     if(fakeProgress === 90) progress.innerHTML = "✨ Finalisation...";
-  }, 500);
+  }, 600);
 
   const formData = new FormData();
   formData.append("audio", fileInput.files[0]);
@@ -368,6 +335,10 @@ async function generateVideo(){
       resultBox.innerHTML = `
         <h2>Ton clip est prêt 🔥</h2>
         <video controls src="${data.videoUrl}"></video>
+        <br><br>
+        <a href="${data.videoUrl}" target="_blank">
+          <button>Télécharger / ouvrir la vidéo</button>
+        </a>
         <br><br>
         <button onclick="location.reload()">Créer un autre clip</button>
       `;
