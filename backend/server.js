@@ -1,30 +1,80 @@
 import express from "express";
 import cors from "cors";
 import multer from "multer";
-import path from "path";
+import RunwayML from "@runwayml/sdk";
 
 const app = express();
 const upload = multer({ dest: "uploads/" });
 
-app.use(cors());
-
-// 👉 IMPORTANT
-app.use(express.static("frontend"));
-
-// 👉 route principale
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve("frontend/index.html"));
+const runway = new RunwayML({
+  apiKey: process.env.RUNWAYML_API_SECRET
 });
 
-// 👉 test API
+app.use(cors());
+app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("VibeCut backend OK");
+});
+
 app.get("/test", (req, res) => {
   res.send("API OK");
 });
 
-app.post("/generate", upload.single("audio"), (req, res) => {
-  res.json({
-    videoUrl: "https://samplelib.com/lib/preview/mp4/sample-5s.mp4"
-  });
+app.post("/generate", upload.single("audio"), async (req, res) => {
+  try {
+    const style = req.body.style || "oriental";
+
+    const prompts = {
+      oriental:
+        "traditional oriental music video, Moroccan medina at night, warm lantern lights, cinematic atmosphere, arabic architecture, mystical mood, soft shadows, no text",
+      maghrebin:
+        "Maghreb music video, traditional North African street, warm colors, lanterns, authentic cultural atmosphere, cinematic camera, no text",
+      desert:
+        "Arabic desert music video, golden sunset, wind in sand, camel silhouettes, traditional clothing, emotional cinematic atmosphere, no text",
+      royal:
+        "luxury arabic palace music video, gold patterns, traditional islamic architecture, elegant lighting, cinematic camera movement, no text",
+      cinematic:
+        "cinematic oriental music video, dramatic lighting, traditional architecture, warm gold tones, professional film look, no text"
+    };
+
+    const promptText = prompts[style] || prompts.oriental;
+
+    const task = await runway.textToVideo
+      .create({
+        model: "gen4.5",
+        promptText,
+        ratio: "1280:720",
+        duration: 5
+      })
+      .waitForTaskOutput({
+        timeout: 300000
+      });
+
+    const videoUrl = task.output?.[0];
+
+    if (!videoUrl) {
+      return res.status(500).json({
+        error: "Aucune vidéo reçue de Runway"
+      });
+    }
+
+    res.json({
+      videoUrl
+    });
+
+  } catch (error) {
+    console.error("Erreur Runway:", error);
+
+    res.status(500).json({
+      error: "Erreur génération vidéo",
+      details: error.message
+    });
+  }
 });
 
-app.listen(3000, () => console.log("Server running"));
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("VibeCut backend running on port", PORT);
+});
