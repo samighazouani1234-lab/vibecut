@@ -1,227 +1,452 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VibeCut</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VibeCut | Clips IA Oriental</title>
 
 <style>
-body {
-  margin:0;
-  font-family: Arial, sans-serif;
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family: Georgia, "Times New Roman", serif;
   color:white;
+  min-height:100vh;
   background:
-    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.95)),
-    url("https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1600&q=80");
+    linear-gradient(90deg,rgba(0,0,0,.92),rgba(0,0,0,.45),rgba(0,0,0,.95)),
+    url("https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1800&q=90");
   background-size:cover;
-  background-position:center;
+  background-position:center top;
 }
 
-/* NAVBAR */
-nav{
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:linear-gradient(to bottom,transparent 0%,#050505 82%);
+  pointer-events:none;
+}
+
+.page{
+  position:relative;
+  z-index:2;
+  width:min(1200px,92%);
+  margin:auto;
+}
+
+header{
   display:flex;
   justify-content:space-between;
-  padding:20px 40px;
+  align-items:center;
+  padding:28px 0;
 }
 
-nav h2{
-  color:#D4AF37;
+.logo{
+  color:#f6c955;
+  font-size:28px;
+  font-weight:900;
 }
 
 nav a{
   color:white;
-  margin-left:20px;
   text-decoration:none;
+  margin:0 18px;
+  font-size:15px;
 }
 
-/* HERO */
+.login{
+  border:1px solid rgba(246,201,85,.5);
+  padding:10px 22px;
+  border-radius:30px;
+  color:#f6c955;
+}
+
 .hero{
-  display:flex;
-  justify-content:space-between;
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:50px;
+  min-height:560px;
   align-items:center;
-  padding:80px;
 }
 
-.hero-text h1{
-  font-size:50px;
+.badge{
+  display:inline-block;
+  border:1px solid rgba(246,201,85,.45);
+  color:#f6c955;
+  padding:10px 18px;
+  border-radius:30px;
+  font-size:13px;
+  margin-bottom:26px;
+  background:rgba(0,0,0,.45);
+}
+
+h1{
+  font-size:64px;
+  line-height:1.05;
+  max-width:560px;
 }
 
 .gold{
-  color:#D4AF37;
+  color:#f6c955;
+}
+
+.hero p{
+  margin-top:24px;
+  max-width:520px;
+  line-height:1.7;
+  color:#eee;
+  font-family:Arial,sans-serif;
 }
 
 button{
-  background:linear-gradient(45deg,#D4AF37,#ff9a00);
+  margin-top:28px;
   border:none;
-  padding:15px 25px;
-  border-radius:30px;
-  font-weight:bold;
+  background:linear-gradient(135deg,#f6c955,#ff963e);
+  color:#111;
+  padding:16px 34px;
+  border-radius:40px;
+  font-weight:900;
   cursor:pointer;
-  margin-top:20px;
-  box-shadow:0 0 20px rgba(212,175,55,0.5);
+  box-shadow:0 12px 40px rgba(246,201,85,.25);
 }
 
-/* VIDEO BOX */
-.video-box{
-  width:400px;
-  height:250px;
-  border-radius:20px;
-  background:black;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:40px;
+.social{
+  margin-top:22px;
+  font-family:Arial,sans-serif;
+  font-size:13px;
+  color:#ccc;
 }
 
-/* UPLOAD */
-.upload-box{
-  margin:60px auto;
-  width:350px;
-  padding:30px;
-  border-radius:20px;
-  background:rgba(255,255,255,0.05);
-  backdrop-filter:blur(10px);
-  text-align:center;
-}
-
-select,input{
-  margin-top:10px;
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  width:100%;
-}
-
-/* CARDS */
-.styles{
-  display:flex;
-  justify-content:center;
+.info-bar{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
   gap:20px;
-  margin-top:40px;
+  background:rgba(10,10,10,.78);
+  border:1px solid rgba(246,201,85,.25);
+  border-radius:22px;
+  padding:24px;
+  backdrop-filter:blur(10px);
 }
 
-.style-card{
-  width:200px;
-  padding:10px;
-  border-radius:15px;
-  background:rgba(255,255,255,0.05);
-  backdrop-filter:blur(10px);
+.info{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  font-family:Arial,sans-serif;
+}
+
+.icon{
+  color:#f6c955;
+  font-size:28px;
+}
+
+.info h3{
+  font-size:16px;
+}
+
+.info p{
+  color:#bbb;
+  font-size:14px;
+  margin-top:5px;
+}
+
+.section{
+  padding:46px 0;
+}
+
+.section-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:25px;
+}
+
+.small{
+  color:#f6c955;
+  font-size:13px;
+  font-family:Arial,sans-serif;
+  text-transform:uppercase;
+}
+
+h2{
+  font-size:36px;
+}
+
+.styles{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:18px;
+}
+
+.card{
+  min-height:210px;
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  border:1px solid rgba(246,201,85,.25);
+  background:#111;
+}
+
+.card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  position:absolute;
+  inset:0;
+  filter:brightness(.65);
+}
+
+.card-content{
+  position:absolute;
+  bottom:0;
+  padding:18px;
+  background:linear-gradient(to top,rgba(0,0,0,.92),transparent);
+  width:100%;
+}
+
+.card h3{
+  color:white;
+  font-size:18px;
+}
+
+.card p{
+  font-family:Arial,sans-serif;
+  font-size:13px;
+  color:#ddd;
+  margin-top:8px;
+}
+
+.creator{
+  margin-top:40px;
+  background:rgba(0,0,0,.82);
+  border:1px solid rgba(246,201,85,.25);
+  border-radius:26px;
+  padding:34px;
   text-align:center;
 }
 
-.style-card img{
-  width:100%;
-  height:120px;
-  object-fit:cover;
-  border-radius:10px;
+input,select{
+  width:90%;
+  max-width:420px;
+  padding:15px;
+  margin:12px;
+  border:none;
+  border-radius:14px;
+  font-size:16px;
+}
+
+#progress{
+  margin-top:20px;
+  color:#f6c955;
+  font-family:Arial,sans-serif;
+  font-weight:bold;
+}
+
+.loader{
+  display:none;
+  width:80%;
+  max-width:480px;
+  height:12px;
+  background:#222;
+  border-radius:20px;
+  margin:22px auto;
+  overflow:hidden;
+}
+
+.fill{
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg,#f6c955,#ff963e);
+}
+
+video{
+  margin-top:25px;
+  width:90%;
+  max-width:720px;
+  border-radius:20px;
+  border:1px solid rgba(246,201,85,.35);
+}
+
+footer{
+  padding:40px 0;
+  text-align:center;
+  color:#888;
+  font-family:Arial,sans-serif;
+}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr}
+  h1{font-size:44px}
+  nav{display:none}
+  .info-bar,.styles{grid-template-columns:1fr}
 }
 </style>
-
 </head>
 
 <body>
 
-<!-- NAV -->
-<nav>
-  <h2>🏰 VibeCut</h2>
-  <div>
-    <a href="#">Styles</a>
-    <a href="#">Créer</a>
-    <a href="#">Résultat</a>
-  </div>
-</nav>
+<div class="page">
 
-<!-- HERO -->
+<header>
+  <div class="logo">🕌 VibeCut</div>
+  <nav>
+    <a href="#">Accueil</a>
+    <a href="#styles">Styles</a>
+    <a href="#create">Créer</a>
+    <a href="#">À propos</a>
+    <a href="#">Tarifs</a>
+  </nav>
+  <div class="login">Connexion</div>
+</header>
+
 <section class="hero">
-  <div class="hero-text">
-    <h1>Crée ton clip avec une <span class="gold">âme orientale</span></h1>
-    <p>Transforme ton son en clip inspiré du désert, médinas et architecture orientale.</p>
-    <button onclick="scrollToUpload()">Créer mon clip</button>
-  </div>
-
-  <div class="video-box">
-    ▶
+  <div>
+    <div class="badge">✦ GÉNÉRATEUR DE CLIPS IA ORIENTAL</div>
+    <h1>Crée ton clip musical avec une <span class="gold">âme orientale</span></h1>
+    <p>
+      Transforme ton son en clip vidéo inspiré du Maghreb, des médinas,
+      des lanternes, du désert et de l’architecture traditionnelle.
+    </p>
+    <button onclick="document.getElementById('create').scrollIntoView({behavior:'smooth'})">
+      ☀ Créer mon clip
+    </button>
+    <div class="social">👥👥👥👥 &nbsp; +250 artistes utilisent déjà VibeCut</div>
   </div>
 </section>
 
-<!-- UPLOAD -->
-<div class="upload-box" id="upload">
-  <h2>Créer ton clip</h2>
-
-  <input type="file" id="audio">
-
-  <select id="style">
-    <option value="desert">Desert</option>
-    <option value="royal">Royal Arabic</option>
-    <option value="night">Oriental Night</option>
-  </select>
-
-  <button onclick="generate()">Générer</button>
-
-  <p id="status"></p>
+<div class="info-bar">
+  <div class="info">
+    <div class="icon">✎</div>
+    <div><h3>Styles uniques</h3><p>Univers orientaux authentiques</p></div>
+  </div>
+  <div class="info">
+    <div class="icon">▣</div>
+    <div><h3>IA puissante</h3><p>Technologie de pointe</p></div>
+  </div>
+  <div class="info">
+    <div class="icon">⚡</div>
+    <div><h3>Rapide & facile</h3><p>Génère ton clip en minutes</p></div>
+  </div>
+  <div class="info">
+    <div class="icon">⇩</div>
+    <div><h3>Haute qualité</h3><p>Télécharge en 1080p</p></div>
+  </div>
 </div>
 
-<!-- STYLES -->
-<div class="styles">
-
-  <div class="style-card">
-    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470">
-    <h3>Desert</h3>
+<section class="section" id="styles">
+  <div class="section-top">
+    <div>
+      <div class="small">Nos univers</div>
+      <h2>Choisis ton style</h2>
+    </div>
+    <button>Voir tous les styles</button>
   </div>
 
-  <div class="style-card">
-    <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da">
-    <h3>Royal</h3>
-  </div>
+  <div class="styles">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=800&q=80">
+      <div class="card-content"><h3>Oriental Night</h3><p>Médinas, lanternes, ambiance mystique.</p></div>
+    </div>
 
-  <div class="style-card">
-    <img src="https://images.unsplash.com/photo-1548013146-72479768bada">
-    <h3>Night</h3>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80">
+      <div class="card-content"><h3>Desert Vibe</h3><p>Déserts dorés et couchers de soleil.</p></div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80">
+      <div class="card-content"><h3>Royal Arabic</h3><p>Palais, dorures et architecture.</p></div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80">
+      <div class="card-content"><h3>Maghreb Classic</h3><p>Raï, chaâbi et énergie populaire.</p></div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1512632578888-169bbbc64f33?auto=format&fit=crop&w=800&q=80">
+      <div class="card-content"><h3>Cinématique</h3><p>Ambiance film et storytelling.</p></div>
+    </div>
   </div>
+</section>
+
+<section class="creator" id="create">
+  <h2>Créer ton clip</h2>
+  <p>Upload ton son, choisis un style, puis génère ton clip.</p>
+
+  <input type="file" id="audioInput" accept="audio/*">
+  <br>
+
+  <select id="style">
+    <option value="oriental">Oriental Night</option>
+    <option value="desert">Desert Vibe</option>
+    <option value="royal">Royal Arabic</option>
+    <option value="maghrebin">Maghreb Classic</option>
+    <option value="cinematic">Cinématique</option>
+  </select>
+  <br>
+
+  <button onclick="generateVideo()">Générer mon clip</button>
+
+  <div id="progress"></div>
+  <div class="loader" id="loader"><div class="fill" id="fill"></div></div>
+  <div id="result"></div>
+</section>
+
+<footer>© 2026 VibeCut — Clips IA pour artistes</footer>
 
 </div>
 
 <script>
+const BACKEND_URL = "https://vibecut.onrender.com";
 
-function scrollToUpload(){
-  document.getElementById("upload").scrollIntoView({behavior:"smooth"});
-}
-
-async function generate(){
-  const file = document.getElementById("audio").files[0];
+async function generateVideo(){
+  const file = document.getElementById("audioInput").files[0];
   const style = document.getElementById("style").value;
-  const status = document.getElementById("status");
+  const progress = document.getElementById("progress");
+  const result = document.getElementById("result");
+  const loader = document.getElementById("loader");
+  const fill = document.getElementById("fill");
 
   if(!file){
-    alert("Ajoute un audio !");
+    alert("Choisis un fichier audio !");
     return;
   }
 
-  status.innerText = "Génération...";
+  result.innerHTML = "";
+  progress.innerText = "⏳ Génération en cours...";
+  loader.style.display = "block";
+  fill.style.width = "20%";
 
   const formData = new FormData();
   formData.append("audio", file);
   formData.append("style", style);
 
   try{
-    const res = await fetch("/generate",{
+    const res = await fetch(`${BACKEND_URL}/generate`, {
       method:"POST",
       body:formData
     });
 
+    fill.style.width = "100%";
     const data = await res.json();
 
     if(data.videoUrl){
-      status.innerHTML = "<video controls width='300' src='"+data.videoUrl+"'></video>";
-    } else {
-      status.innerText = "Erreur serveur";
+      progress.innerText = "🔥 Ton clip est prêt";
+      result.innerHTML = `
+        <video controls src="${data.videoUrl}"></video>
+        <br><br>
+        <a href="${data.videoUrl}" target="_blank"><button>Ouvrir / télécharger</button></a>
+      `;
+    }else{
+      progress.innerText = "Erreur : aucune vidéo reçue.";
     }
 
   }catch(e){
-    status.innerText = "Erreur";
+    progress.innerText = "❌ Erreur serveur";
+    console.error(e);
   }
 }
-
 </script>
 
 </body>
