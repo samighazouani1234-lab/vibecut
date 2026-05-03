@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Create</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<h1>Créer ton clip</h1>
+<input type="file" id="audio"><br><br>
+<button onclick="send()">Générer</button>
+
+<script>
+async function send(){
+const file=document.getElementById("audio").files[0];
+const form=new FormData();
+form.append("audio",file);
+
+const res=await fetch("http://localhost:3000/generate",{method:"POST",body:form});
+const data=await res.json();
+alert("Vidéo: "+data.videoUrl);
+}
+</script>
+</body></html>
